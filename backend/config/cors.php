@@ -1,11 +1,11 @@
 <?php
+// config/cors.php
 return [
     'paths' => ['api/*'],
     'allowed_methods' => ['*'],
-    'allowed_origins' => ['http://localhost:5173'], // Add this line
-    'allowed_origins_patterns' => [],
+    'allowed_origins' => ['http://localhost:5173'],
     'allowed_headers' => ['*'],
     'exposed_headers' => [],
     'max_age' => 0,
-    'supports_credentials' => false,
+    'supports_credentials' => true, // Change to true
 ];
