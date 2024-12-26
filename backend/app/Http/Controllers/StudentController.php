@@ -39,9 +39,19 @@ class StudentController extends Controller
             return response()->json(['message' => 'Student not found'], 404);
         }
 
+        $request->validate([
+            'full_name' => 'required|string',
+            'phone_number' => 'required|string',
+            'code' => 'required|string',
+            'year' => 'required|string',
+            'city' => 'required|string',
+            'specialty' => 'required|string',
+        ]);
+
         $student->update($request->all());
-        return response()->json($student);
+        return response()->json($student); // Return updated student
     }
+
 
     public function destroy($id)
     {
