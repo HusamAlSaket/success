@@ -14,13 +14,13 @@ class Student extends Model
     protected $primaryKey = 'student_id'; // Custom primary key
 
     protected $fillable = [
-        'name',
+        'full_name',
         'email',
         'phone_number',
         'code',
         'year',
         'city',
-        'speciality',
+        'specialty',
         'password',
     ];
 
