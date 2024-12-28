@@ -11,8 +11,14 @@ class Code extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'code_id';
     protected $fillable = [
-        'code', 'package_id', 'status'
+        'code',
+        'subject',
+        'year',
+        'semester',
+        'status',
+        'package_id'
     ];
 
     public function package()

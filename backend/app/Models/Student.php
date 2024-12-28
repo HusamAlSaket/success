@@ -22,6 +22,8 @@ class Student extends Model
         'city',
         'specialty',
         'password',
+        'user_id',
+        
     ];
 
     public function user()

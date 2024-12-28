@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
-import "./Dashboard.css"; // Assuming the style is in the same folder
+import "./Dashboard.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const Dashboard = () => {
@@ -11,7 +11,8 @@ const Dashboard = () => {
     not_used_codes: 0,
     total_students: 0,
   });
-  const [modalData, setModalData] = useState(null); // For edit modal
+  const [modalData, setModalData] = useState(null);
+  const [showAddModal, setShowAddModal] = useState(false);
   const [formData, setFormData] = useState({
     full_name: "",
     phone_number: "",
@@ -19,30 +20,30 @@ const Dashboard = () => {
     year: "",
     city: "",
     specialty: "",
+    email: "",
+    password: "",
   });
 
-  // Fetch student data and stats on page load
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const studentsResponse = await axios.get(
-          "http://localhost:8000/api/students"
-        );
-        setStudents(studentsResponse.data);
-
-        const statsResponse = await axios.get(
-          "http://localhost:8000/api/students/stats"
-        );
-        setStats(statsResponse.data);
-      } catch (error) {
-        console.error("Error fetching data", error);
-      }
-    };
-
     fetchData();
   }, []);
 
-  // Handle delete confirmation
+  const fetchData = async () => {
+    try {
+      const studentsResponse = await axios.get(
+        "http://localhost:8000/api/students"
+      );
+      setStudents(studentsResponse.data);
+
+      const statsResponse = await axios.get(
+        "http://localhost:8000/api/students/stats"
+      );
+      setStats(statsResponse.data);
+    } catch (error) {
+      console.error("Error fetching data", error);
+    }
+  };
+
   const handleDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -71,7 +72,6 @@ const Dashboard = () => {
     });
   };
 
-  // Handle modal input change
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
@@ -79,43 +79,95 @@ const Dashboard = () => {
     });
   };
 
-  // Open modal with student data for editing
   const handleEdit = (student) => {
-    console.log(student); // Check if the student data is passed correctly
     setModalData(student);
     setFormData({
-      full_name: student.full_name,
-      phone_number: student.phone_number,
-      code: student.code,
-      year: student.year,
-      city: student.city,
-      specialty: student.specialty,
+      full_name: student.full_name || "",
+      phone_number: student.phone_number || "",
+      code: student.code || "",
+      year: student.year || "",
+      city: student.city || "",
+      specialty: student.specialty || "",
+      email: student.email || "",
+      password: "", // Clear password field for security
     });
   };
 
-  // Submit the edited student data
-const handleSubmit = (e) => {
-  e.preventDefault();
-  console.log("Submitting form with data:", formData);
-  axios
-    .put(`http://localhost:8000/api/students/${modalData.student_id}`, formData)
-    .then((response) => {
-      console.log("Update response:", response.data);
-      const updatedStudents = students.map((student) =>
-        student.student_id === response.data.student_id
-          ? response.data
-          : student
-      );
-      setStudents(updatedStudents);
-      setModalData(null); // Close the modal
-      Swal.fire("Success!", "Student updated successfully.", "success");
-    })
-    .catch((error) => {
-      console.error("Error updating student", error);
-      Swal.fire("Error!", "Failed to update student.", "error");
+  const handleAdd = () => {
+    setShowAddModal(true);
+    setFormData({
+      full_name: "",
+      phone_number: "",
+      code: "",
+      year: "",
+      city: "",
+      specialty: "",
+      email: "",
+      password: "",
     });
-};
+  };
 
+  const handleAddSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/api/students",
+        formData
+      );
+
+      setStudents([...students, response.data]);
+      setShowAddModal(false);
+      await fetchData(); // Refresh the data
+      Swal.fire("Success!", "Student added successfully.", "success");
+    } catch (error) {
+      console.error("Add error:", error);
+      Swal.fire(
+        "Error!",
+        error.response?.data?.message || "Failed to add student.",
+        "error"
+      );
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const updateData = {
+      full_name: formData.full_name,
+      phone_number: formData.phone_number,
+      code: formData.code,
+      year: formData.year,
+      city: formData.city,
+      specialty: formData.specialty,
+      email: formData.email,
+    };
+
+    if (formData.password) {
+      updateData.password = formData.password;
+    }
+
+    try {
+      const response = await axios.put(
+        `http://localhost:8000/api/students/${modalData.student_id}`,
+        updateData
+      );
+
+      const updatedStudents = students.map((student) =>
+        student.student_id === modalData.student_id ? response.data : student
+      );
+
+      setStudents(updatedStudents);
+      setModalData(null);
+      Swal.fire("Success!", "Student updated successfully.", "success");
+    } catch (error) {
+      console.error("Update error:", error);
+      Swal.fire(
+        "Error!",
+        error.response?.data?.message || "Failed to update student.",
+        "error"
+      );
+    }
+  };
 
   return (
     <div>
@@ -134,7 +186,13 @@ const handleSubmit = (e) => {
         </div>
       </div>
 
-      <h2>Student List</h2>
+      <div className="header-actions">
+        <h2>Student List</h2>
+        <button className="add-button" onClick={handleAdd}>
+          Add Student
+        </button>
+      </div>
+
       <table>
         <thead>
           <tr>
@@ -143,7 +201,8 @@ const handleSubmit = (e) => {
             <th>Code</th>
             <th>Year</th>
             <th>City</th>
-            <th>Speciality</th>
+            <th>Specialty</th>
+            <th>Email</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -156,6 +215,7 @@ const handleSubmit = (e) => {
               <td>{student.year}</td>
               <td>{student.city}</td>
               <td>{student.specialty}</td>
+              <td>{student.email}</td>
               <td>
                 <button onClick={() => handleEdit(student)}>Edit</button>
                 <button onClick={() => handleDelete(student.student_id)}>
@@ -167,10 +227,9 @@ const handleSubmit = (e) => {
         </tbody>
       </table>
 
+      {/* Edit Modal */}
       {modalData && (
         <div className="modal show">
-          {" "}
-          {/* Add the 'show' class */}
           <div className="modal-content">
             <span className="close" onClick={() => setModalData(null)}>
               &times;
@@ -225,7 +284,101 @@ const handleSubmit = (e) => {
                 placeholder="Specialty"
                 required
               />
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                placeholder="Email"
+                required
+              />
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleInputChange}
+                placeholder="Password (leave empty to keep current)"
+              />
               <button type="submit">Save Changes</button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Add Modal */}
+      {showAddModal && (
+        <div className="modal show">
+          <div className="modal-content">
+            <span className="close" onClick={() => setShowAddModal(false)}>
+              &times;
+            </span>
+            <h2>Add New Student</h2>
+            <form onSubmit={handleAddSubmit}>
+              <input
+                type="text"
+                name="full_name"
+                value={formData.full_name}
+                onChange={handleInputChange}
+                placeholder="Full Name"
+                required
+              />
+              <input
+                type="text"
+                name="phone_number"
+                value={formData.phone_number}
+                onChange={handleInputChange}
+                placeholder="Phone Number"
+                required
+              />
+              <input
+                type="text"
+                name="code"
+                value={formData.code}
+                onChange={handleInputChange}
+                placeholder="Code"
+                required
+              />
+              <input
+                type="text"
+                name="year"
+                value={formData.year}
+                onChange={handleInputChange}
+                placeholder="Year"
+                required
+              />
+              <input
+                type="text"
+                name="city"
+                value={formData.city}
+                onChange={handleInputChange}
+                placeholder="City"
+                required
+              />
+              <input
+                type="text"
+                name="specialty"
+                value={formData.specialty}
+                onChange={handleInputChange}
+                placeholder="Specialty"
+                required
+              />
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                placeholder="Email"
+                required
+              />
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleInputChange}
+                placeholder="Password"
+                required
+              />
+              <button type="submit">Add Student</button>
             </form>
           </div>
         </div>

@@ -4,7 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
-
+use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Platforms\AbstractPlatform;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -21,6 +22,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
            Schema::defaultStringLength(191);
-
+        // Register the enum type
+        if (!Type::hasType('enum')) {
+            Type::addType('enum', 'Doctrine\DBAL\Types\StringType');
+        }
     }
 }
