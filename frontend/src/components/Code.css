@@ -1,0 +1,30 @@
+/* CodeManagement.css */
+.shared-button {
+  background-color: #646cff; /* Same color as logo hover */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 300ms;
+}
+
+.shared-button:hover {
+  background-color: #61dafb; /* Lighter shade from the logo hover */
+}
+
+button[type="button"] {
+  background-color: #d33; /* Red color for cancel buttons */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 300ms;
+}
+
+button[type="button"]:hover {
+  background-color: #ff5733; /* Darker red color for cancel hover */
+}

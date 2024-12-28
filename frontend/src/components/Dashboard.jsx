@@ -188,7 +188,7 @@ const Dashboard = () => {
 
       <div className="header-actions">
         <h2>Student List</h2>
-        <button className="add-button" onClick={handleAdd}>
+        <button className="shared-button" onClick={handleAdd}>
           Add Student
         </button>
       </div>
@@ -217,8 +217,16 @@ const Dashboard = () => {
               <td>{student.specialty}</td>
               <td>{student.email}</td>
               <td>
-                <button onClick={() => handleEdit(student)}>Edit</button>
-                <button onClick={() => handleDelete(student.student_id)}>
+                <button
+                  className="shared-button"
+                  onClick={() => handleEdit(student)}
+                >
+                  Edit
+                </button>
+                <button
+                  className="shared-button"
+                  onClick={() => handleDelete(student.student_id)}
+                >
                   Delete
                 </button>
               </td>

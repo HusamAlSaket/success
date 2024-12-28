@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./Code.css";
 
 const CodeManagement = () => {
   const [codes, setCodes] = useState([]);
@@ -171,9 +172,12 @@ const CodeManagement = () => {
           <option value="1st">1st</option>
           <option value="2nd">2nd</option>
         </select>
-        <button type="submit">{modal ? "Update Code" : "Add Code"}</button>
+        <button className="shared-button" type="submit">
+          {modal ? "Update Code" : "Add Code"}
+        </button>
         {modal && (
           <button
+            className="shared-button"
             type="button"
             onClick={() => {
               setModalData(null);
@@ -211,8 +215,16 @@ const CodeManagement = () => {
               <td>{code.semester}</td>
               <td>{code.status}</td>
               <td>
-                <button onClick={() => handleEdit(code)}>Edit</button>
-                <button onClick={() => handleDelete(code.code_id)}>
+                <button
+                  className="shared-button"
+                  onClick={() => handleEdit(code)}
+                >
+                  Edit
+                </button>
+                <button
+                  className="shared-button"
+                  onClick={() => handleDelete(code.code_id)}
+                >
                   Delete
                 </button>
               </td>
