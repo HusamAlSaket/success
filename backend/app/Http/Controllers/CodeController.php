@@ -20,6 +20,7 @@ class CodeController extends Controller
             'year' => 'required',
             'semester' => 'required|in:1st,2nd',
             'code' => 'required|string|unique:codes',
+            'status' => 'required|in:unused,used', // Validate status
         ]);
 
         $code = Code::create($request->all());
@@ -28,7 +29,6 @@ class CodeController extends Controller
 
     public function update(Request $request, $id)
     {
-        // Find by code_id instead of id
         $code = Code::where('code_id', $id)->firstOrFail();
 
         if (!$code) {
@@ -40,6 +40,7 @@ class CodeController extends Controller
             'year' => 'required',
             'semester' => 'required|in:1st,2nd',
             'code' => 'required|string|unique:codes,code,' . $id . ',code_id',
+            'status' => 'required|in:unused,used', // Validate status
         ]);
 
         $code->update($request->all());
@@ -48,7 +49,6 @@ class CodeController extends Controller
 
     public function destroy($id)
     {
-        // Find by code_id instead of id
         $code = Code::where('code_id', $id)->firstOrFail();
 
         if (!$code) {

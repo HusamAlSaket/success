@@ -97,7 +97,7 @@ const CodeManagement = () => {
       subject: code.subject,
       year: code.year,
       semester: code.semester,
-      status: code.status || "unused",
+      status: code.status || "unused", // Set status if it's available
     });
   };
 
@@ -171,6 +171,15 @@ const CodeManagement = () => {
         >
           <option value="1st">1st</option>
           <option value="2nd">2nd</option>
+        </select>
+        <select
+          name="status"
+          value={formData.status}
+          onChange={handleInputChange}
+          required
+        >
+          <option value="unused">Unused</option>
+          <option value="used">Used</option>
         </select>
         <button className="shared-button" type="submit">
           {modal ? "Update Code" : "Add Code"}

@@ -188,7 +188,7 @@ const Dashboard = () => {
 
       <div className="header-actions">
         <h2>Student List</h2>
-        <button className="shared-button" onClick={handleAdd}>
+        <button className="shared-button mb-3 mt-3" onClick={handleAdd}>
           Add Student
         </button>
       </div>
