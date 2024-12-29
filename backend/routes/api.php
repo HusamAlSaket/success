@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\PackageController;
+use App\Mail\TestEmail;
+use Illuminate\Support\Facades\Mail;
 
 /*
 |---------------------------------------------------------------------------
@@ -39,6 +41,13 @@ Route::delete('/codes/{id}', [CodeController::class, 'destroy']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+
+Route::post('/verify-otp', [AuthController::class, 'verifyOtp']);
+
+Route::post('/send-email', function () {
+  Mail::to('husamalsaket2001@gmail.com')->send(new TestEmail());
+  return response()->json(['message' => 'Test email has been sent!']);
+});
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
   return $request->user();

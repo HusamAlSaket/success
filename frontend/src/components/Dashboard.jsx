@@ -4,6 +4,8 @@ import Swal from "sweetalert2";
 import "./Dashboard.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+// php -S 127.0.0.1:8000 -t public  in case server doesnt start when u run php artisan serve
+
 const Dashboard = () => {
   const [students, setStudents] = useState([]);
   const [stats, setStats] = useState({
