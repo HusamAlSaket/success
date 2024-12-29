@@ -4,6 +4,7 @@ import Register from "./components/Register";
 import Dashboard from "./components/Dashboard";
 import CodeManagement from "./components/CodeManagement";
 import Sidebar from "./components/Sidebar"; // Import the Sidebar
+import PackageManagement from "./components/PackageManagement";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/codes" element={<CodeManagement />} />
+            <Route path="/packages" element={<PackageManagement />} />
           </Routes>
         </div>
       </div>

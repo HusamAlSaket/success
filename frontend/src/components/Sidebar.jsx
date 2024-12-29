@@ -15,6 +15,9 @@ const Sidebar = () => {
         <Link to="/codes" className="sidenav-link">
           Code Management
         </Link>
+        <Link to="/packages" className="sidenav-link">
+         Package Management
+        </Link>
       </div>
     </div>
   );

@@ -5,7 +5,7 @@ use App\Http\Controllers\CodeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
-
+use App\Http\Controllers\PackageController;
 
 /*
 |---------------------------------------------------------------------------
@@ -18,7 +18,14 @@ use App\Http\Controllers\StudentController;
 |
 */
 
-Route::get('/students', [StudentController::class, 'index']);  // Add this route for fetching students
+
+Route::get('/packages', [PackageController::class, 'index']); // Fetch all packages
+Route::post('/packages', [PackageController::class, 'store']); // Create a new package
+Route::get('/packages/{id}', [PackageController::class, 'show']); // Fetch a single package by ID
+Route::put('/packages/{id}', [PackageController::class, 'update']); // Update a package
+Route::delete('/packages/{id}', [PackageController::class, 'destroy']); // Delete a package
+
+Route::get('/students', [StudentController::class, 'index']);  
 Route::post('/students', [StudentController::class, 'store']);
 Route::put('/students/{id}', [StudentController::class, 'update']);
 Route::delete('/students/{id}', [StudentController::class, 'destroy']);
