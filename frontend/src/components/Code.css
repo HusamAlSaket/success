@@ -28,3 +28,6 @@ button[type="button"] {
 button[type="button"]:hover {
   background-color: #ff5733; /* Darker red color for cancel hover */
 }
+.danger{
+  background-color:#dc3546;
+}

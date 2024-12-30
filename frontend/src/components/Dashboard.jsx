@@ -53,7 +53,7 @@ const Dashboard = () => {
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
+      cancelButtonColor: "#646cff",
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
@@ -220,13 +220,13 @@ const Dashboard = () => {
               <td>{student.email}</td>
               <td>
                 <button
-                  className="shared-button"
+                  className="shared-button mb-3"
                   onClick={() => handleEdit(student)}
                 >
                   Edit
                 </button>
                 <button
-                  className="shared-button"
+                  className="shared-button danger"
                   onClick={() => handleDelete(student.student_id)}
                 >
                   Delete

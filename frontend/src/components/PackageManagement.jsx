@@ -65,25 +65,27 @@ const PackageManagement = () => {
 
     const handleDelete = (package_id) => {
         Swal.fire({
-            title: "Are you sure?",
-            text: "This action will delete the package permanently.",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!",
+          title: "Are you sure?",
+          text: "This action will delete the package permanently.",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#646cff",
+          confirmButtonText: "Yes, delete it!",
         }).then((result) => {
-            if (result.isConfirmed) {
-                axios
-                    .delete(`http://localhost:8000/api/packages/${package_id}`)
-                    .then(() => {
-                        setPackages(packages.filter((pkg) => pkg.package_id !== package_id));
-                        Swal.fire("Deleted!", "Package has been deleted.", "success");
-                    })
-                    .catch(() => {
-                        Swal.fire("Error!", "Failed to delete package.", "error");
-                    });
-            }
+          if (result.isConfirmed) {
+            axios
+              .delete(`http://localhost:8000/api/packages/${package_id}`)
+              .then(() => {
+                setPackages(
+                  packages.filter((pkg) => pkg.package_id !== package_id)
+                );
+                Swal.fire("Deleted!", "Package has been deleted.", "success");
+              })
+              .catch(() => {
+                Swal.fire("Error!", "Failed to delete package.", "error");
+              });
+          }
         });
     };
 
@@ -108,13 +110,13 @@ const PackageManagement = () => {
                     placeholder="Package Name"
                     required
                 />
-                <textarea
+                <input
                     name="content"
                     value={formData.content}
                     onChange={handleInputChange}
                     placeholder="Content"
                     required
-                ></textarea>
+                ></input>
                 <input
                     type="number"
                     name="price"
@@ -143,8 +145,8 @@ const PackageManagement = () => {
                             <td>{pkg.content}</td>
                             <td>${pkg.price}</td>
                             <td>
-                                <button onClick={() => handleEdit(pkg)}>Edit</button>
-                                <button onClick={() => handleDelete(pkg.package_id)}>Delete</button>
+                                <button onClick={() => handleEdit(pkg)} className="mb-3">Edit</button>
+                                <button onClick={() => handleDelete(pkg.package_id)} className="btn btn-danger">Delete</button>
                             </td>
                         </tr>
                     ))}

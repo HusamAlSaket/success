@@ -111,7 +111,7 @@ const CodeManagement = () => {
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
+        cancelButtonColor: "#646cff",
         confirmButtonText: "Yes, delete it!",
       });
 
@@ -225,13 +225,13 @@ const CodeManagement = () => {
               <td>{code.status}</td>
               <td>
                 <button
-                  className="shared-button"
+                  className="shared-button mb-3"
                   onClick={() => handleEdit(code)}
                 >
                   Edit
                 </button>
                 <button
-                  className="shared-button"
+                  className="shared-button danger"
                   onClick={() => handleDelete(code.code_id)}
                 >
                   Delete
