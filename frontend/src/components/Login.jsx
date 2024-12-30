@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
 
-const Login = () => {
+const Login = ({ setIsAuthenticated }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [otp, setOtp] = useState("");
@@ -29,21 +29,16 @@ const Login = () => {
     } catch (err) {
       // Handle different types of errors
       if (err.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
         if (err.response.data && err.response.data.message) {
           setError(err.response.data.message);
         } else if (err.response.data && err.response.data.email) {
-          // Handle Laravel validation errors
           setError(err.response.data.email[0]);
         } else {
           setError("Invalid email or password");
         }
       } else if (err.request) {
-        // The request was made but no response was received
         setError("No response from server. Please try again.");
       } else {
-        // Something happened in setting up the request
         setError("An error occurred. Please try again.");
       }
     }
@@ -63,7 +58,11 @@ const Login = () => {
       );
 
       if (response.data && response.data.access_token) {
-        localStorage.setItem("token", response.data.access_token);
+        // Store token with the correct key name
+        localStorage.setItem("authToken", response.data.access_token);
+        // Update authentication state
+        setIsAuthenticated(true);
+        // Navigate to dashboard
         navigate("/dashboard");
       }
     } catch (err) {

@@ -1,32 +1,35 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./Sidebar.css"; // Add this import for the CSS
+import "./Sidebar.css";
 
-const Sidebar = () => {
+const Sidebar = ({ setIsAuthenticated }) => {
   const navigate = useNavigate();
+const handleLogout = async (e) => {
+  e.preventDefault();
 
-  // Function to handle the logout action
-  const handleLogout = async () => {
-    try {
-      // Send the logout request to the backend API
-      const response = await axios.post(
+  // Clear local state and redirect to login page immediately
+  localStorage.removeItem("authToken");
+  setIsAuthenticated(false);
+  navigate("/login");
+
+  try {
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      await axios.post(
         "http://localhost:8000/api/logout",
         {},
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`, // Add the token from local storage
+            Authorization: `Bearer ${token}`,
           },
         }
       );
-
-      // If successful, remove the token from localStorage and navigate to login page
-      localStorage.removeItem("token");
-      navigate("/login"); // Redirect to login page
-    } catch (error) {
-      console.error("Logout failed:", error);
     }
-  };
+  } catch (error) {
+    console.error("Logout API call failed:", error);
+  }
+};
 
   return (
     <div className="sidenav">
@@ -44,7 +47,6 @@ const Sidebar = () => {
           Package Management
         </Link>
       </div>
-      {/* Logout Button */}
       <button onClick={handleLogout} className="logout-button">
         Logout
       </button>
